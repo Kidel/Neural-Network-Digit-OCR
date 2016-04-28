@@ -146,25 +146,24 @@ function getData() {
     var letter = [];
     var i=0;
     for(var pixel=0; pixel<imgData.data.length; pixel+=4){
-        letter[i]=(imgData.data[pixel]/255)
+        letter[i]=(imgData.data[pixel]/255);
         i++;
     }
     return letter;
     //console.log(letter);
 }
 
-function sendData(data, urlServer) {
+function sendCanvas(data, urlServer) {
     var xhttp = new XMLHttpRequest();
     xhttp.onload = function () {
-        // You can get all kinds of information about the HTTP response.
         var status = xhttp.status; // HTTP response status, e.g., 200 for "200 OK"
-        var data = xhttp.responseText; // Returned data, e.g., an HTML document.
+        var responseText = xhttp.responseText; // Returned data, e.g., an HTML document.
         if(status!=200){
             document.getElementById("interpretation").style.color = "red";
         } else {
             document.getElementById("interpretation").style.color = "black";
         }
-        document.getElementById("interpretation").innerHTML = data;
+        document.getElementById("interpretation").innerHTML = responseText;
     };
     xhttp.open("POST", urlServer, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

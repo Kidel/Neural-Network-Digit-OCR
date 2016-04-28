@@ -18,7 +18,7 @@ var trainer = new Trainer(myPerceptron);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Index', text: 'Still nothing here' });
+    res.render('index', { title: 'Index', text: 'Go to /store to transfer data to the database, then go to /train to start training, and then finally you can use the canvas down here to test the neural network' });
 });
 
 router.get('/store', function(req, res, next) {
@@ -52,8 +52,8 @@ router.get('/test', function(req, res, next) {
 });
 
 router.post('/testCharacter', function(req, res, next) {
-    console.log(req.body.letter);
-    res.render('index', { title: 'Index', text: myPerceptron.activate(req.body.letter)[0] });
+    var letter = req.body.letter.replace(/[\n\r]+/g, '').split(",").map(Number);
+    res.json(myPerceptron.activate(letter)[0]);
 });
 
 module.exports = router;
