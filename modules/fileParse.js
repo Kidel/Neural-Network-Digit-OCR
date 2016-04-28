@@ -1,0 +1,59 @@
+var fs = require('graceful-fs');
+
+var trainingSetModel = require('../models/trainingSetModel.js');
+var testSetModel = require('../models/testSetModel.js');
+
+// reads all files in a folder and executes the onFileContent function on filename and content
+function readFiles(dirname, onFileContent, onError, callback) {
+  fs.readdir(dirname, function(err, filenames) {
+    if (err) {
+      onError(err);
+      return;
+    }
+    filenames.forEach(function(filename) {
+      fs.readFile(dirname + filename, 'utf-8', function(err, content) {
+        if (err) {
+          onError(err);
+          return;
+        }
+        onFileContent(dirname, filename, content);
+      });
+    });
+  });
+  callback()
+}
+
+
+function fileToDB(dirname, filename, content){
+  input = content.replace(/[\n\r]+/g, '').split("").map(Number);
+
+  output = filename.split("_")[0];
+
+  if(dirname.indexOf('training') != -1) {
+    var setModel = trainingSetModel;
+  }
+  else {
+    var setModel = testSetModel;
+  }
+
+  var set = new setModel({
+    input : input,
+    output : output
+  });
+
+  set.save(function(err, set){
+      if(err) {
+          console.log("error: " + err);
+      }
+      console.log("success");
+  });
+}
+
+
+function parseAllFiles(dirname, callback) {
+  readFiles(dirname, fileToDB, function(err) {console.log("error: " + err);}, callback);
+}
+
+
+
+module.exports = {readFiles: readFiles, fileToDB: fileToDB, parseAllFiles: parseAllFiles};
