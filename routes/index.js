@@ -13,7 +13,7 @@ var Neuron = synaptic.Neuron,
     Trainer = synaptic.Trainer,
     Architect = synaptic.Architect;
 
-var myPerceptron = new Architect.Perceptron(1024, 10, 1);
+var myPerceptron = new Architect.Perceptron(1024, 500, 1);
 var trainer = new Trainer(myPerceptron);
 
 /* GET home page. */
