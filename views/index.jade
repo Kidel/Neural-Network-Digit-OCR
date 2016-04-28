@@ -1,5 +1,13 @@
 extends layout
 
 block content
-  h1= title
-  p #{text}
+    h1= title
+    p #{text}
+
+    canvas#sheet(width='32', height='32')
+    script(src="/javascripts/canvasControl.js")
+
+    br
+
+    button(onclick="sendData(getData(), '/testCharacter')") Submit
+    #interpretation

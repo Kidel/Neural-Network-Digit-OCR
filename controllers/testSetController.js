@@ -45,7 +45,9 @@ module.exports = {
      * testSetController.create()
      */
     create: function(req, res) {
-        var testSet = new testSetModel({			input : req.body.input,			output : req.body.output
+        var testSet = new testSetModel({
+            input : req.body.input,
+            output : req.body.output
         });
 
         testSet.save(function(err, testSet){
@@ -80,7 +82,9 @@ module.exports = {
                 });
             }
 
-            testSet.input =  req.body.input ? req.body.input : testSet.input;			testSet.output =  req.body.output ? req.body.output : testSet.output;			
+            testSet.input =  req.body.input ? req.body.input : testSet.input;
+            testSet.output =  req.body.output ? req.body.output : testSet.output;
+
             testSet.save(function(err, testSet){
                 if(err) {
                     return res.json(500, {

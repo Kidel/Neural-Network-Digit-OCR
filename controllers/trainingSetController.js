@@ -45,7 +45,9 @@ module.exports = {
      * trainingSetController.create()
      */
     create: function(req, res) {
-        var trainingSet = new trainingSetModel({			input : req.body.input,			output : req.body.output
+        var trainingSet = new trainingSetModel({
+            input : req.body.input,
+            output : req.body.output
         });
 
         trainingSet.save(function(err, trainingSet){
@@ -80,7 +82,9 @@ module.exports = {
                 });
             }
 
-            trainingSet.input =  req.body.input ? req.body.input : trainingSet.input;			trainingSet.output =  req.body.output ? req.body.output : trainingSet.output;			
+            trainingSet.input =  req.body.input ? req.body.input : trainingSet.input;
+            trainingSet.output =  req.body.output ? req.body.output : trainingSet.output;
+
             trainingSet.save(function(err, trainingSet){
                 if(err) {
                     return res.json(500, {
