@@ -24,6 +24,14 @@ function addClick(x, y, dragging) {
 }
 
 /**
+ * Resets the complete canvas.
+ */
+function resetCanvas() {
+    // Clears the canvas
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+}
+
+/**
  * Redraw the complete canvas.
  */
 function redraw() {
@@ -149,8 +157,10 @@ function getData() {
         letter[i]=(imgData.data[pixel]/255);
         i++;
     }
+	for(var j=0; j<letter.length; j+=32){
+        console.log(letter.slice(j, j+32));
+    }
     return letter;
-    //console.log(letter);
 }
 
 function sendCanvas(data, urlServer) {
