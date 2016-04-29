@@ -26,8 +26,7 @@ function readFiles(dirname, onFileContent, onError, callback) {
 
 
 function fileToDB(dirname, filename, content){
-    input = content.replace(/[\n\r]+/g, '').split("").map(Number);
-
+    input = content.replace(/[\n\r\s]+/g, '').split("").map(Number);
     output = [filename.split("_")[0]].map(Number);
 
     var setModel;

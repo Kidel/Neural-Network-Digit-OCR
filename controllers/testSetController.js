@@ -11,7 +11,7 @@ module.exports = {
      * testSetController.list()
      */
     list: function(req, res) {
-        testSetModel.find(function(err, testSets){
+        testSetModel.find({}).select({input:1, output:1, _id:0}).exec(function(err, testSets){
             if(err) {
                 return res.json(500, {
                     message: 'Error getting testSet.'

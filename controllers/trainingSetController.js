@@ -11,7 +11,7 @@ module.exports = {
      * trainingSetController.list()
      */
     list: function(req, res) {
-        trainingSetModel.find(function(err, trainingSets){
+        trainingSetModel.find({}).select({input:1, output:1, _id:0}).exec(function(err, trainingSets){
             if(err) {
                 return res.json(500, {
                     message: 'Error getting trainingSet.'
