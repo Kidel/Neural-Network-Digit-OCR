@@ -13,8 +13,8 @@ var Neuron = synaptic.Neuron,
     Trainer = synaptic.Trainer,
     Architect = synaptic.Architect;
 
-var myPerceptron = new Architect.Perceptron(1024, 500, 1);
-var trainer = new Trainer(myPerceptron);
+var net = new Architect.Perceptron(1024,9,1);
+var trainer = null;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -33,27 +33,41 @@ router.get('/store', function(req, res, next) {
 });
 
 router.get('/train', function(req, res, next) {
-    trainingSetModel.find(function(err, trainingSet){
+    trainingSetModel.find({}).select({input:1, output:1, _id:0}).exec(function(err, trainingSet){
         if(err) return res.json(500, { message: 'Error getting data' });
-        trainer.train(trainingSet, {
-            rate: .1,
-            iterations: 50,
-            error: .005
-        });
+		//console.log(trainingSet[0]);
+		trainer = new Trainer(net);
+        var ocr = trainer.train(trainingSet) // TODO persist ocr somehow
         res.render('index', { title: 'Index', text: "Training done" });
     });
 });
 
 router.get('/test', function(req, res, next) {
-    testSetModel.find(function(err, testSet){
+    testSetModel.find({}).select({input:1, output:1, _id:0}).exec(function(err, testSet){
         if(err) return res.json(500, { message: 'Error getting data' });
-        res.render('index', { title: 'Index', text: myPerceptron.activate(testSet[200].input)[0] + " " +  testSet[200].output});
+		try {
+			res.render('index', { title: 'Index', text: net.activate(testSet[200].input) + " " +  testSet[200].output});
+		}
+		catch (e) {
+			res.render('index', { title: 'Index', text: "You need to train the network first" });
+		}	
     });
 });
 
 router.post('/testCharacter', function(req, res, next) {
     var letter = req.body.letter.replace(/[\n\r]+/g, '').split(",").map(Number);
-    res.json(myPerceptron.activate(letter)[0]);
+	try {
+		if(trainer==null) throw "You need to train the network first";
+		else {
+			var result = net.activate(letter)[0];
+			//console.log(letter[0])
+			//console.log(result)
+			res.json(result);
+		}
+	}
+	catch (e) {
+		res.json(e);
+	}
 });
 
 module.exports = router;
