@@ -36,8 +36,14 @@ router.get('/train', function(req, res, next) {
     trainingSetModel.find({}).select({input:1, output:1, _id:0}).exec(function(err, trainingSet){
         if(err) return res.json(500, { message: 'Error getting data' });
 		//console.log(trainingSet[0]);
-		trainer = new Trainer(net);
+		trainer = new Trainer(net,{
+							//rate: .1,
+							iterations: 10000,
+							error: .1,
+							shuffle: true
+						});
         var ocr = trainer.train(trainingSet) // TODO persist ocr somehow
+		console.log(ocr);
         res.render('index', { title: 'Index', text: "Training done" });
     });
 });
