@@ -13,7 +13,7 @@ var Neuron = synaptic.Neuron,
     Trainer = synaptic.Trainer,
     Architect = synaptic.Architect;
 
-var net = new Architect.Perceptron(1024,9,1);
+var net = new Architect.Perceptron(1024,30,10);
 var trainer = null;
 
 /* GET home page. */
@@ -38,12 +38,13 @@ router.get('/train', function(req, res, next) {
 		//console.log(trainingSet[0]);
 		trainer = new Trainer(net,{
 							//rate: .1,
-							iterations: 10000,
-							error: .1,
+							iterations: 100,
+							error: 0.0000001,
 							shuffle: true
 						});
-        var ocr = trainer.train(trainingSet) // TODO persist ocr somehow
+        var ocr = trainer.train(trainingSet) 
 		console.log(ocr);
+		//console.log(trainer);
         res.render('index', { title: 'Index', text: "Training done" });
     });
 });
@@ -65,7 +66,7 @@ router.post('/testCharacter', function(req, res, next) {
 	try {
 		if(trainer==null) throw "You need to train the network first";
 		else {
-			var result = net.activate(letter)[0];
+			var result = net.activate(letter);
 			//console.log(letter[0])
 			//console.log(result)
 			res.json(result);
