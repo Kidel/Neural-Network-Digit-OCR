@@ -23,10 +23,13 @@ function getPage(urlServer, elementId) {
         var responseText = xhttp.responseText; // Returned data, e.g., an HTML document.
         if(status!=200){
             document.getElementById(elementId).style.color = "red";
-        } else {
+        }
+        else {
             document.getElementById(elementId).style.color = "black";
         }
-        document.getElementById(elementId).innerHTML = responseText.replace(/["]+/g, '');
+        if(elementId == "storingStatus") document.getElementById("storingButton").disabled = true;
+        document.getElementById(elementId).innerHTML = responseText.replace(/[\"]+/g, '');
+
     };
     xhttp.open("GET", urlServer, true);
     xhttp.send();

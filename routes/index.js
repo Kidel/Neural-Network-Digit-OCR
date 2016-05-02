@@ -44,7 +44,7 @@ router.get('/', function(req, res, next) {
             canStore = false;
         }
         if(!result && status == "") {
-            status = "The database is empty, store the data";
+            status = "The database is empty, store the data first";
             canStore = true;
         }
         else if(status == "") {
@@ -73,13 +73,15 @@ router.get('/store', function(req, res, next) {
 
 router.get('/train', function(req, res, next) {
     var io = req.io;
+    var iterations = 100;
+    var sqrt = Math.floor(Math.sqrt(iterations));
     trainingSetModel.find({}).select({input:1, output:1, _id:0}).exec(function(err, trainingSet){
         if(err) return res.json(500, { message: 'Error getting data' });
         //console.log(trainingSet[0]);
         var options = {
             rate:  0.03,
             decay: 0.001,
-            iterations: 10, // becomes iterations^2 times because of the loop below
+            iterations: sqrt, // becomes iterations^2 times because of the loop below
             error: 0.000001,
             shuffle: true,
             log: true,
@@ -96,7 +98,7 @@ router.get('/train', function(req, res, next) {
         //res.render('index', { title: 'Train', text: "Training done"});
         io.emit('trainingStatus', "Training done!");
     });
-    res.json("Training started, will end in about 15 minutes");
+    res.json("Training started, should end in about " + Math.floor((iterations*10)/60) + " minutes");
 });
 
 router.get('/test', function(req, res, next) {

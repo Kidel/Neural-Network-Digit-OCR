@@ -5,9 +5,9 @@ block content
     p #{text}
     p
         -if(canStore)
-            button(onclick="getPage('/store', 'storingStatus')") Store the data
+            button#storingButton(onclick="getPage('/store', 'storingStatus')") Store the data
         -else
-            button(onclick="getPage('/store', 'storingStatus')", disabled='') Store the data
+            button#storingButton(onclick="getPage('/store', 'storingStatus')", disabled='') Store the data
         span#storingStatus #{databaseStatus}
     p
         button(onclick="getPage('/train', 'trainingStatus')") Start Training

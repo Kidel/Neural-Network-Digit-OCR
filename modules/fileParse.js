@@ -3,8 +3,11 @@ var fs = require('graceful-fs');
 var trainingSetModel = require('../models/trainingSetModel.js');
 var testSetModel = require('../models/testSetModel.js');
 
+var count = 0;
+
 // reads all files in a folder and executes the onFileContent function on filename and content
 function readFiles(dirname, onFileContent, onError, callback) {
+    count = 0;
     var err = false;
     fs.readdir(dirname, function(err, filenames) {
         if (err) {
@@ -20,8 +23,8 @@ function readFiles(dirname, onFileContent, onError, callback) {
                 onFileContent(dirname, filename, content);
             });
         });
+        callback(err);
     });
-    callback(err);
 }
 
 
@@ -49,7 +52,9 @@ function fileToDB(dirname, filename, content){
         if(err) {
             console.log("error: " + err);
         }
-        console.log("success");
+        //console.log("success");
+        count++;
+        if(count%100==0) console.log("stored", count, "files");
     });
 }
 
