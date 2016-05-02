@@ -36,21 +36,43 @@ function indexOfMax(arr) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Index', text: 'Go to /store to transfer data to the database (only once), then go to /train to start training the NN, and then finally you can use the canvas down here to test the neural network, or go to /test for a validation using the test set' });
-});
-
-router.get('/store', function(req, res, next) {
-    fileParse.parseAllFiles('public/digits/trainingDigits/', function(err) {
-        if(err) return res.json(500, { message: 'Error getting data' });
-        fileParse.parseAllFiles('public/digits/testDigits/', function(err) {
-            if(err) return res.json(500, { message: 'Error getting data' });
-
-            res.render('index', { title: 'Store', text: 'Data Stored' });
+    trainingSetModel.findOne({}).exec(function (err, result) {
+        var status = "";
+        var canStore = false;
+        if (err) {
+            status = err;
+            canStore = false;
+        }
+        if(!result && status == "") {
+            status = "The database is empty, store the data";
+            canStore = true;
+        }
+        else if(status == "") {
+            status = "Data has been already stored";
+            canStore = false;
+        }
+        res.render('index', {
+            title: 'Index',
+            databaseStatus: status,
+            canStore: canStore
         });
     });
 });
 
+router.get('/store', function(req, res, next) {
+    var io = req.io;
+    fileParse.parseAllFiles('public/digits/trainingDigits/', function(err) {
+        if(err) return res.json(500, { message: 'Error getting data' });
+        fileParse.parseAllFiles('public/digits/testDigits/', function(err) {
+            if(err) return res.json(500, { message: 'Error getting data' });
+            io.emit('storingStatus', "Data stored with no errors");
+        });
+    });
+    res.json("Storing data");
+});
+
 router.get('/train', function(req, res, next) {
+    var io = req.io;
     trainingSetModel.find({}).select({input:1, output:1, _id:0}).exec(function(err, trainingSet){
         if(err) return res.json(500, { message: 'Error getting data' });
         //console.log(trainingSet[0]);
@@ -71,11 +93,14 @@ router.get('/train', function(req, res, next) {
             options.rate -= options.decay;
         }
         //console.log(trainer);
-        res.render('index', { title: 'Train', text: "Training done" });
+        //res.render('index', { title: 'Train', text: "Training done"});
+        io.emit('trainingStatus', "Training done!");
     });
+    res.json("Training started, will end in about 15 minutes");
 });
 
 router.get('/test', function(req, res, next) {
+    var io = req.io;
     testSetModel.find({}).select({input:1, output:1, _id:0}).exec(function(err, testSet){
         if(err) return res.json(500, { message: 'Error getting data' });
         try {
@@ -105,13 +130,16 @@ router.get('/test', function(req, res, next) {
             console.log("predictions");
             console.log(matrix);
             testData += "Tested " + testSet.length + " inputs, " + good + " were correct, rate of " + Math.floor((good/testSet.length)*100) + "%. ";
-            res.render('index', { title: 'Test', text: testData});
+            //res.render('index', { title: 'Test', text: testData});
+            io.emit('testingStatus', testData);
         }
         catch (e) {
             console.log(e);
-            res.render('index', { title: 'Test', text: "You need to train the network first" });
+            //res.render('index', { title: 'Test', text: "You need to train the network first" });
+            io.emit('testingStatus', "You need to train the network first");
         }
     });
+    res.json("Testing started, will end soon");
 });
 
 router.post('/testCharacter', function(req, res, next) {

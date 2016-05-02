@@ -15,3 +15,19 @@ function indexOfMax(arr) {
 
     return maxIndex;
 }
+
+function getPage(urlServer, elementId) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onload = function () {
+        var status = xhttp.status; // HTTP response status, e.g., 200 for "200 OK"
+        var responseText = xhttp.responseText; // Returned data, e.g., an HTML document.
+        if(status!=200){
+            document.getElementById(elementId).style.color = "red";
+        } else {
+            document.getElementById(elementId).style.color = "black";
+        }
+        document.getElementById(elementId).innerHTML = responseText.replace(/["]+/g, '');
+    };
+    xhttp.open("GET", urlServer, true);
+    xhttp.send();
+}

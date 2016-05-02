@@ -2,9 +2,11 @@ body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-
 a {
   color: #00B7FF;
+}
+button {
+    margin-right: 5px;
 }
 canvas, img {
     image-rendering: optimizeSpeed;

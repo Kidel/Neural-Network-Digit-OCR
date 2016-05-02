@@ -3,6 +3,18 @@ extends layout
 block content
     h1= title
     p #{text}
+    p
+        -if(canStore)
+            button(onclick="getPage('/store', 'storingStatus')") Store the data
+        -else
+            button(onclick="getPage('/store', 'storingStatus')", disabled='') Store the data
+        span#storingStatus #{databaseStatus}
+    p
+        button(onclick="getPage('/train', 'trainingStatus')") Start Training
+        span#trainingStatus
+    p
+        button(onclick="getPage('/test', 'testingStatus')") Test the network
+        span#testingStatus
 
     canvas#sheet(width='320', height='320')
     script(src="/javascripts/canvasControl.js")

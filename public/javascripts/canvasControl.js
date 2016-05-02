@@ -232,7 +232,7 @@ function getData() {
     var letter = [];
     var i=0;
     for(var pixel=0; pixel<imgData.data.length; pixel+=4){
-        letter[i]=Math.floor(imgData.data[pixel]/RED);
+        letter[i]=Math.round(imgData.data[pixel]/RED);
         i++;
     }
     for(var j=0; j<letter.length; j+=WIDTH){
@@ -251,7 +251,7 @@ function sendCanvas(data, urlServer) {
         } else {
             document.getElementById("interpretation").style.color = "black";
         }
-        document.getElementById("interpretation").innerHTML = responseText;
+        document.getElementById("interpretation").innerHTML = responseText.replace(/["]+/g, '');;
     };
     xhttp.open("POST", urlServer, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
