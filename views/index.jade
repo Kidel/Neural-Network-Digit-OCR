@@ -16,6 +16,9 @@ block content
         button(onclick="getPage('/test', 'testingStatus')") Test the network
         span#testingStatus
 
+    br
+
+    p once the training is over, use this canvas to test the ocr with your own handwriting
     canvas#sheet(width='320', height='320')
     script(src="/javascripts/canvasControl.js")
 
@@ -24,6 +27,7 @@ block content
     button(onclick="sendCanvas(getData(), '/testCharacter')") Submit
     button(onclick="resetCanvas()") Reset
 
+    br
     br
 
     #interpretation
