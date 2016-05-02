@@ -80,26 +80,33 @@ router.get('/test', function(req, res, next) {
 			var testData="";
 			if(trainer==null) testData += "You need to train the network first, however here are the stats for now. ";
 			var good = 0;
-			var a = 0;
-			var b = 0;
-			var c = 0;
-			var d = 0;
-			for(var k in testSet) {
-				if(indexOfMax(net.activate(testSet[k].input)) == indexOfMax(testSet[k].output)){
-					good++;
-					a++;
-					d+=9;
-				}
-				else {
-					c++;
-					b++;
-					d+=8;
+			var matrix = [];
+			for(var i=0; i<10; i++){
+				if(typeof matrix[i]=="undefined") matrix[i] = [];
+				for(var j=0; j<10; j++){
+					if(typeof matrix[i][j]=="undefined") matrix[i][j] = 0;
 				}
 			}
-			testData += "Tested " + testSet.length + " inputs, " + good + " were correct, rate of " + Math.floor((good/testSet.length)*100) + "%. \n a=" + a + " b=" + b + " c=" + c + " d=" + d;
+			for(var k in testSet) { 
+				var app = net.activate(testSet[k].input).map(function(arg) {return arg.toFixed(3)});
+				var appT = testSet[k].output.map(function(arg) {return arg.toFixed(3)});
+				if(indexOfMax(app) == indexOfMax(appT)){
+					good++;
+				}
+				for(var i in app){
+					if(indexOfMax(app) == i)
+						for(var j in appT){
+							if(indexOfMax(appT) == j) matrix[i][j]++;
+						}
+				}
+			}
+			console.log("predictions");
+			console.log(matrix);
+			testData += "Tested " + testSet.length + " inputs, " + good + " were correct, rate of " + Math.floor((good/testSet.length)*100) + "%. ";
 			res.render('index', { title: 'Test', text: testData});
 		}
 		catch (e) {
+			console.log(e);
 			res.render('index', { title: 'Test', text: "You need to train the network first" });
 		}	
     });
@@ -113,7 +120,7 @@ router.post('/testCharacter', function(req, res, next) {
 			var result = net.activate(letter);
 			//console.log(letter[0])
 			//console.log(result)
-			res.json({read: indexOfMax(result), output: result});
+			res.json({read: indexOfMax(result), output: result.map(function(arg) {return arg.toFixed(3)})});
 		}
 	}
 	catch (e) {
