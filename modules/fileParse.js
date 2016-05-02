@@ -27,10 +27,10 @@ function readFiles(dirname, onFileContent, onError, callback) {
 
 function fileToDB(dirname, filename, content){
     input = content.replace(/[\n\r\s]+/g, '').split("").map(Number);
-	output=[];
-	for(var i=0;i<10;i++){
-		output[i]=0;
-	}
+    output=[];
+    for(var i=0;i<10;i++){
+        output[i]=0;
+    }
     output[filename.split("_")[0]*1]=1;
 
     var setModel;
