@@ -1,10 +1,22 @@
 # Neural-Digits
-Trains a Neural Network to read handwritten digits. Uses synaptic to implement the network itself and MongoDB to store the data.
+Trains a Neural Network to read handwritten digits (OCR). Uses [synaptic](https://github.com/cazala/synaptic) to implement the network itself and part of the training, MongoDB to store the data and socket.io for reactive communication strategy.
+After the network has been trained you can use the test set to see how it worked, or use the canvas to make it recognise your own handwriting.
 
-../public/digits/ folder contains the dataset in raw format. The first time you run the application you need to use [localhost:3000/store](http://localhost:3000/store) to parse the data and store it in the database, so that every row has an array with the input data and the correct output value.
+../public/digits/ folder contains the dataset in raw format. The first time you run the application you need to parse the data and store it in the database (simply follow the steps in [localhost:3000](http://localhost:3000/)), so that every row has an array with the input data and the correct output value.
 
 #### Why do I need it?
-This is meant to be just an experiment or simply practice. There are far better tools to do the same thing, like [Weka](http://www.cs.waikato.ac.nz/ml/weka/).
+This is meant to be just an experiment or simply practice. There are more efficient tools and libraries for Neural Networks.
+
+### How does it work?
+Every handwritten digit is sampled in a 32x32 matrix of 0 and 1,
+and then stored in the database as input and output. The input is an
+array with 1024 elements, one for each sampled pixel, while the output is another
+array of 10 elements, one for each possible digit (the output digit is the index with value 1 in the array).
+Currently the training set has 1934 examples, and the test set has 946.
+
+The Neural Network used for this OCR has 1024 inputs, an hidden layer of size 30 and an output layer of size 10. The settings can be found in ../routes/index.js
+
+![perceptron](https://raw.githubusercontent.com/Kidel/Neural-Digits/master/nn.png)
 
 ***
 
@@ -31,4 +43,4 @@ And this one in another terminal to start the server (of course current director
 cd /your/path/to/Neural-Digits/
 npm start
 ```
-Finally go to [localhost:3000/store](http://localhost:3000/store) to load the database (only the first time) and then to [localhost:3000/train](http://localhost:3000/train) to train the network (every time you start th application). Once the training is done (it may take a while) you can test your own handwriting recognition in the JavaScript canvas.
+Finally go to [localhost:3000](http://localhost:3000) and follow the instructions.
