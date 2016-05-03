@@ -3,20 +3,20 @@ extends layout
 block content
     h1= title
     p #{text}
+
+    hr(align="left")
+
     p
         -if(canStore)
-            button#storingButton(onclick="getPage('/store', 'storingStatus')") Store the data
+            button#storingButton(onclick="getPage('/store', 'storingStatus')") Store digits data
         -else
-            button#storingButton(onclick="getPage('/store', 'storingStatus')", disabled='') Store the data
+            button#storingButton(onclick="getPage('/store', 'storingStatus')", disabled='') Store digits data
         span#storingStatus #{databaseStatus}
     p
         button(onclick="getPage('/train', 'trainingStatus')") Start Training
         span#trainingStatus
-    p
-        button(onclick="getPage('/test', 'testingStatus')") Test the network
-        span#testingStatus
 
-    hr
+    hr(align="left")
 
     p
         button(onclick="getPage('/storeNetwork', 'storeNetStatus')") Store the current network
@@ -25,7 +25,13 @@ block content
         button(onclick="getPage('/loadNetwork', 'loadNetStatus')") Load a stored network
         span#loadNetStatus
 
-    hr
+    hr(align="left")
+
+    p
+        button(onclick="getPage('/test', 'testingStatus')") Test the network
+        span#testingStatus
+
+    hr(align="left")
 
     p Once the training is over, use this canvas to test the ocr with your own handwriting
     canvas#sheet(width='320', height='320')

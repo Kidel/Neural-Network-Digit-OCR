@@ -5,6 +5,9 @@ body {
 a {
   color: #00B7FF;
 }
+hr {
+    width: 400px;
+}
 button {
     margin-right: 5px;
 }
