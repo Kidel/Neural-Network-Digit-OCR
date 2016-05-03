@@ -157,7 +157,7 @@ router.post('/testCharacter', function(req, res, next) {
             var result = net.activate(letter);
             //console.log(letter[0])
             //console.log(result)
-            res.json({read: indexOfMax(result), output: result.map(function(arg) {return arg.toFixed(3)})});
+            res.json({"It's a": indexOfMax(result), output: result.map(function(arg, index) {return "'" + index + "':" + Math.floor(arg*100)+"%"})});
         }
     }
     catch (e) {

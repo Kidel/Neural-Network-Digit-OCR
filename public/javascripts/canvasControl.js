@@ -251,7 +251,7 @@ function sendCanvas(data, urlServer) {
         } else {
             document.getElementById("interpretation").style.color = "black";
         }
-        document.getElementById("interpretation").innerHTML = responseText.replace(/["]+/g, '');;
+        document.getElementById("interpretation").innerHTML = responseText.replace(/[{}"]+/g, '').replace(/[,]+/g, ', ').replace(/[:]+/g, ': ');
     };
     xhttp.open("POST", urlServer, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
