@@ -5,6 +5,7 @@ var fileParse = require('../modules/fileParse');
 
 var testSetModel = require('../models/testSetModel.js');
 var trainingSetModel = require('../models/trainingSetModel.js');
+var networkModel = require('../models/networkModel.js');
 
 var synaptic = require('synaptic'); // this line is not needed in the browser
 var Neuron = synaptic.Neuron,
@@ -75,10 +76,9 @@ router.get('/store', function(req, res, next) {
 router.get('/train', function(req, res, next) {
     var io = req.io;
     var iterations = 100;
-    var sqrt = Math.floor(Math.sqrt(iterations));
     trainingSetModel.find({}).select({input:1, output:1, _id:0}).exec(function(err, trainingSet){
         if(err) return res.json(500, { message: 'Error getting data' });
-        //console.log(trainingSet[0]);
+        var sqrt = Math.floor(Math.sqrt(iterations));
         var options = {
             rate:  0.03,
             decay: 0.001,
@@ -88,8 +88,8 @@ router.get('/train', function(req, res, next) {
             log: true,
             cost: Trainer.cost.CROSS_ENTROPY
         };
-        trainer = new Trainer(net,options);
-        for(var i=0; i<options.iterations; i++){
+        trainer = new Trainer(net, options);
+        for(var i=0; i<options.iterations; i++){ 
             var ocr = trainer.train(trainingSet);
             console.log(ocr);
             options.error = 0.001;
@@ -159,6 +159,50 @@ router.post('/testCharacter', function(req, res, next) {
     catch (e) {
         res.json(e);
     }
+});
+
+router.get('/storeNetwork', function(req, res, next) {
+    var io = req.io;
+    var networkData = new networkModel({network: JSON.stringify(net.toJSON())});
+    networkModel.remove({}, function(err) {
+        if (err) {
+            console.log("Error deleting the old network");
+            io.emit('storeNetStatus', "Error deleting the old network");
+        }
+        else {
+            networkData.save(function (err2, networkData) {
+                if (err2) {
+                    console.log("Error storing the network");
+                    io.emit('storeNetStatus', "Error storing the network");
+                }
+                else {
+                    console.log("Network data stored");
+                    io.emit('storeNetStatus', "Network data stored");
+                }
+            });
+            console.log("Storing new data...");
+            io.emit('storeNetStatus', "Storing new data...");
+        }
+    });
+    res.json("Deleting the old network...");
+});
+
+router.get('/loadNetwork', function(req, res, next) {
+    var io = req.io;
+    networkModel.findOne({}, function(err, networkData) {
+        if (err) {
+            console.log("Error loading the network");
+            io.emit('loadNetStatus', "Error loading the network");
+        }
+        else {
+            var networkImport = JSON.parse(networkData.network);
+            net = Network.fromJSON(networkImport);
+            trainer = new Trainer(net, {});
+            console.log("Network data loaded");
+            io.emit('loadNetStatus', "Network data loaded");
+        }
+    });
+    res.json("Loading a saved network...");
 });
 
 module.exports = router;

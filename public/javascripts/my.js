@@ -8,3 +8,9 @@ socket.on('testingStatus', function(msg){
 socket.on('storingStatus', function(msg){
     document.getElementById("storingStatus").innerHTML = msg;
 });
+socket.on('storeNetStatus', function(msg){
+    document.getElementById("storeNetStatus").innerHTML = msg;
+});
+socket.on('loadNetStatus', function(msg){
+    document.getElementById("loadNetStatus").innerHTML = msg;
+});

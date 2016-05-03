@@ -13,6 +13,12 @@ block content
         button(onclick="getPage('/train', 'trainingStatus')") Start Training
         span#trainingStatus
     p
+        button(onclick="getPage('/storeNetwork', 'storeNetStatus')") Store the current network
+        span#storeNetStatus
+    p
+        button(onclick="getPage('/loadNetwork', 'loadNetStatus')") Load a saved network
+        span#loadNetStatus
+    p
         button(onclick="getPage('/test', 'testingStatus')") Test the network
         span#testingStatus
 
