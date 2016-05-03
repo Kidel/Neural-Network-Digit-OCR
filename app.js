@@ -35,6 +35,9 @@ var io = require('socket.io')();
 app.io = io;
 io.on('connection', function(socket){
     console.log('A user connected to socket.io');
+    if(routes.trainingDone){
+        io.emit('trainingStatus', "Training done!");
+    }
     socket.on('disconnect', function(){
         console.log('The user disconnected');
     });
