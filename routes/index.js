@@ -89,14 +89,13 @@ router.get('/train', function(req, res, next) {
             cost: Trainer.cost.CROSS_ENTROPY
         };
         trainer = new Trainer(net, options);
-        for(var i=0; i<options.iterations; i++){ 
+        for(var i=0; i<options.iterations; i++){
             var ocr = trainer.train(trainingSet);
             console.log(ocr);
             options.error = 0.001;
             options.rate -= options.decay;
         }
-        //console.log(trainer);
-        //res.render('index', { title: 'Train', text: "Training done"});
+        console.log("Training done!");
         io.emit('trainingStatus', "Training done!");
     });
     res.json("Training started, should end in about " + Math.floor((iterations*10)/60) + " minutes");
