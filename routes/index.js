@@ -15,7 +15,7 @@ var Neuron = synaptic.Neuron,
     Architect = synaptic.Architect;
 
 var net = new Architect.Perceptron(1024,30,10);
-var trainer = null;
+router.trainingDone = false;
 
 function indexOfMax(arr) {
     if (arr.length === 0) {
@@ -75,30 +75,35 @@ router.get('/store', function(req, res, next) {
 
 router.get('/train', function(req, res, next) {
     var io = req.io;
+    var trainer = null;
+    var ocr = null;
     var iterations = 100;
+    router.trainingDone = false;
     trainingSetModel.find({}).select({input:1, output:1, _id:0}).exec(function(err, trainingSet){
         if(err) return res.json(500, { message: 'Error getting data' });
         var sqrt = Math.floor(Math.sqrt(iterations));
         var options = {
             rate:  0.03,
-            decay: 0.001,
-            iterations: sqrt, // becomes iterations^2 times because of the loop below
+            decay: 0.02/(sqrt*2),
+            iterations: Math.floor(sqrt/2),
             error: 0.000001,
             shuffle: true,
             log: true,
             cost: Trainer.cost.CROSS_ENTROPY
         };
-        trainer = new Trainer(net, options);
-        for(var i=0; i<options.iterations; i++){
-            var ocr = trainer.train(trainingSet);
+        for(var i=0; i<(sqrt*2); i++){
+            trainer = new Trainer(net, options);
+            ocr = trainer.train(trainingSet);
             console.log(ocr);
             options.error = 0.001;
             options.rate -= options.decay;
         }
         console.log("Training done!");
+        io.emit('testingStatus', "<-");
         io.emit('trainingStatus', "Training done!");
+        router.trainingDone = true;
     });
-    res.json("Training started, should end in about " + Math.floor((iterations*10)/60) + " minutes");
+    res.json("Training started, should end in about " + Math.floor(1+(iterations*10)/60) + " minutes");
 });
 
 router.get('/test', function(req, res, next) {
@@ -107,7 +112,7 @@ router.get('/test', function(req, res, next) {
         if(err) return res.json(500, { message: 'Error getting data' });
         try {
             var testData="";
-            if(trainer==null) testData += "You need to train the network first, however here are the stats for now. ";
+            if(!router.trainingDone) testData += "You need to train the network first, however here are the stats for now. ";
             var good = 0;
             var matrix = [];
             for(var i=0; i<10; i++){
@@ -196,8 +201,10 @@ router.get('/loadNetwork', function(req, res, next) {
         else {
             var networkImport = JSON.parse(networkData.network);
             net = Network.fromJSON(networkImport);
-            trainer = new Trainer(net, {});
+            router.trainingDone = true;
             console.log("Network data loaded");
+            io.emit('testingStatus', "<-");
+            io.emit('trainingStatus', "Training done!");
             io.emit('loadNetStatus', "Network data loaded");
         }
     });
