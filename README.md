@@ -16,9 +16,11 @@ array with 1024 elements, one for each sampled pixel, while the output is anothe
 array of 10 elements, one for each possible digit (the output digit is the index with value 1 in the array).
 Currently the training set has 1934 examples, and the test set has 946.
 
+![sampling](https://raw.githubusercontent.com/Kidel/Neural-Digits/master/nn2.png)
+
 The Neural Network used for this OCR has 1024 inputs, an hidden layer of size 30 and an output layer of size 10. The settings can be found in ../routes/index.js
 
-![perceptron](https://raw.githubusercontent.com/Kidel/Neural-Digits/master/nn.png)
+![perceptron](https://raw.githubusercontent.com/Kidel/Neural-Digits/master/nn1.png)
 
 ***
 
