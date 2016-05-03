@@ -4,6 +4,8 @@ After the network has been trained you can use the test set to see how it worked
 
 ../public/digits/ folder contains the dataset in raw format. The first time you run the application you need to parse the data and store it in the database (simply follow the steps in [localhost:3000](http://localhost:3000/)), so that every row has an array with the input data and the correct output value.
 
+* [screenshot](https://raw.githubusercontent.com/Kidel/Neural-Digits/master/screenshot.png)
+
 #### Why do I need it?
 This is meant to be just an experiment or simply practice. There are more efficient tools and libraries for Neural Networks.
 
