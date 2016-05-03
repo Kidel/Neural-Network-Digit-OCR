@@ -152,7 +152,7 @@ router.get('/test', function(req, res, next) {
 router.post('/testCharacter', function(req, res, next) {
     var letter = req.body.letter.replace(/[\n\r]+/g, '').split(",").map(Number);
     try {
-        if(trainer==null) throw "You need to train the network first";
+        if(!router.trainingDone) throw "You need to train the network first";
         else {
             var result = net.activate(letter);
             //console.log(letter[0])
