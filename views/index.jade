@@ -13,16 +13,19 @@ block content
         button(onclick="getPage('/train', 'trainingStatus')") Start Training
         span#trainingStatus
     p
-        button(onclick="getPage('/storeNetwork', 'storeNetStatus')") Store the current network
-        span#storeNetStatus
-    p
-        button(onclick="getPage('/loadNetwork', 'loadNetStatus')") Load a saved network
-        span#loadNetStatus
-    p
         button(onclick="getPage('/test', 'testingStatus')") Test the network
         span#testingStatus
 
-    br
+    hr
+
+    p
+        button(onclick="getPage('/storeNetwork', 'storeNetStatus')") Store the current network
+        span#storeNetStatus
+    p
+        button(onclick="getPage('/loadNetwork', 'loadNetStatus')") Load a stored network
+        span#loadNetStatus
+
+    hr
 
     p Once the training is over, use this canvas to test the ocr with your own handwriting
     canvas#sheet(width='320', height='320')
@@ -30,8 +33,8 @@ block content
 
     br
 
-    button(onclick="sendCanvas(getData(), '/testCharacter')") Submit
-    button(onclick="resetCanvas()") Reset
+    button(onclick="sendCanvas(getData(), '/testCharacter')") Submit the canvas
+    button(onclick="resetCanvas()") Reset the canvas
 
     br
     br
