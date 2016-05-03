@@ -52,7 +52,7 @@ router.get('/', function(req, res, next) {
             canStore = false;
         }
         res.render('index', {
-            title: 'Neural-Digits',
+            title: 'Neural-Digits', 
             text: 'https://github.com/Kidel/Neural-Digits',
             databaseStatus: status,
             canStore: canStore
