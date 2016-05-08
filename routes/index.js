@@ -54,7 +54,7 @@ router.get('/', function(req, res, next) {
         }
         res.render('index', {
             title: 'Neural Network Digit OCR', 
-            text: 'https://github.com/Kidel/Neural-Digits',
+            text: 'https://github.com/Kidel/Neural-Network-Digit-OCR',
             databaseStatus: status,
             canStore: canStore
         });
