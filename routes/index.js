@@ -7,12 +7,12 @@ var testSetModel = require('../models/testSetModel.js');
 var trainingSetModel = require('../models/trainingSetModel.js');
 var networkModel = require('../models/networkModel.js');
 
-var synaptic = require('synaptic'); // this line is not needed in the browser
-var Neuron = synaptic.Neuron,
-    Layer = synaptic.Layer,
-    Network = synaptic.Network,
-    Trainer = synaptic.Trainer,
-    Architect = synaptic.Architect;
+var synapticRegularization = require('../modules/synapticRegularization');
+var Neuron = synapticRegularization.Neuron,
+    Layer = synapticRegularization.Layer,
+    Network = synapticRegularization.Network,
+    Trainer = synapticRegularization.Trainer,
+    Architect = synapticRegularization.Architect;
 
 var net = new Architect.Perceptron(1024,30,10);
 router.trainingDone = false;
