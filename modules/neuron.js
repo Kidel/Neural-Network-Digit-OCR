@@ -6,6 +6,7 @@ if (module) module.exports = Neuron;
  *******************************************************************************************/
 
 function Neuron() {
+    this.lambda = 0.001; // EDITED HERE
     this.ID = Neuron.uid();
     this.label = null;
     this.connections = {
@@ -549,14 +550,14 @@ Neuron.prototype = {
                         if (neuron.selfconnection.gater)
                             buildSentence(xtrace, ' = (', neuron_self_gain, ' * ',
                                 neuron_self_weight, ' * ', xtrace, ' + ', derivative, ' * ',
-                                trace, ' * ', influence, ' + ', '0.001 * ', neuron_self_weight , ')', store_trace); // EDITED HERE
+                                trace, ' * ', influence, ' + ', this.lambda + ' * ', neuron_self_weight , ')', store_trace); // EDITED HERE
                         else
                             buildSentence(xtrace, ' = (', neuron_self_weight, ' * ',
                                 xtrace, ' + ', derivative, ' * ', trace, ' * ',
-                                influence, ' + ', '0.001 * ', neuron_self_weight , ')', store_trace); // EDITED HERE
+                                influence, ' + ', this.lambda + ' * ', neuron_self_weight , ')', store_trace); // EDITED HERE
                     else
                         buildSentence(xtrace, ' = (', derivative, ' * ', trace, ' * ',
-                            influence, ' + ', '0.001 * ', neuron_self_weight , ')', store_trace); // EDITED HERE
+                            influence, ' + ', this.lambda + ' * ', neuron_self_weight , ')', store_trace); // EDITED HERE
                 }
             }
             for (var connection in this.connections.gated) {
