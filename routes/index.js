@@ -15,6 +15,7 @@ var Neuron = synapticRegularization.Neuron,
     Architect = synapticRegularization.Architect;
 
 var net = new Architect.Perceptron(1024,30,10);
+//net.setOptimize(false) //very slow but allows for custom cost function
 router.trainingDone = false;
 
 function indexOfMax(arr) {
@@ -89,13 +90,12 @@ router.get('/train', function(req, res, next) {
             error: 0.000001,
             shuffle: true,
             log: true,
-            cost: Trainer.cost.CROSS_ENTROPY
+            cost: Trainer.cost.MSE
         };
         for(var i=0; i<(sqrt*2); i++){
             trainer = new Trainer(net, options);
             ocr = trainer.train(trainingSet);
             console.log(ocr);
-            options.error = 0.001;
             options.rate -= options.decay;
         }
         console.log("Training done!");
