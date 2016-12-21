@@ -1,5 +1,5 @@
 # Neural Network Digit OCR
-Trains a Neural Network to read handwritten digits (OCR). It uses a modified version of [synaptic](https://github.com/cazala/synaptic) (with regularization parameter Lambda) to implement the network itself and part of the training, MongoDB to store the data and socket.io for reactive communication strategy.
+Trains a Neural Network to read **handwritten digits** (OCR). It uses a modified version of [synaptic](https://github.com/cazala/synaptic) library (with added regularization parameter Lambda) in **Node.js** to implement the network itself and part of the training, **MongoDB** to store the data and **socket.io** for reactive communication strategy.
 After the network has been trained you can use the test set to see how it worked, or use the canvas to make it recognise your own handwriting.
 
 ../public/digits/ folder contains the dataset in raw format. The first time you run the application you need to parse the data and store it in the database (simply follow the steps in [localhost:3000](http://localhost:3000/)), so that every row has an array with the input data and the correct output value.
