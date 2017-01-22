@@ -7,7 +7,7 @@ After the network has been trained you can use the test set to see how it worked
 * [screenshot](https://raw.githubusercontent.com/Kidel/Neural-Network-Digit-OCR/master/screenshot.png)
 
 #### Why do I need it?
-This is meant to be just an experiment or simply practice.
+This is meant to be just code kata.
 
 ### How does it work?
 Every handwritten digit is sampled in a 32x32 matrix of 0 and 1,
